@@ -2,12 +2,13 @@
 #include <iostream>
 using namespace std;
 
-DynamicArray::DynamicArray(int size) : size(size) {
+DynamicArray::DynamicArray(int size) : size(size), capacity(size + 20) {
     if (size < 0) {
         cerr << "Ошибка! Некорректный размер:" << size << ". Создан пустой массив." << endl;
         this->size = 0;
+        this->capacity = 20;
     }
-    data = new int[this->size]();
+    data = new int[this->capacity]();
 }
 
 DynamicArray::DynamicArray(const DynamicArray& other) : size(other.size) {
@@ -50,12 +51,18 @@ void DynamicArray::append(int value) {
         cerr << "Ошибка! print: значение: " << value << " вне диапазона [-100; 100]. Не выполнено." << endl;
         return;
     }
-    int* newData = new int[size + 1];
-    for (int i = 0; i < size; ++i) newData[i] = data[i];
-    newData[size] = value;
-    delete[] data;
-    data = newData;
-    size++;
+    if (capacity > size) {
+        data[size + 1] = value;
+        size++;
+    } else {
+        capacity = capacity + 20;
+        int* newData = new int[capacity];
+        for (int i = 0; i < size; ++i) newData[i] = data[i];
+        newData[size] = value;
+        delete[] data;
+        data = newData;
+        size++;
+    }
 }
 
 void DynamicArray::add(const DynamicArray& other) {

@@ -4,7 +4,8 @@
 class DynamicArray {
 private:
     int* data;      
-    int size;       
+    int size;
+    int capacity;       
 
 public:
     DynamicArray(int size);
