@@ -10,20 +10,43 @@ int main() {
     a.print();
 
     cout << "Проверка создания массива с плохим размером." << endl;
-    DynamicArray bad(-3);
-    cout << "bad = ";
-    bad.print();
+    try {
+        DynamicArray bad(-3);
+        cout << "bad = ";
+        bad.print();
+    } catch (const invalid_argument& e) {
+        cerr << e.what() << endl;
+    }
+    try {
+        DynamicArray bad(10000*10000);
+        cout << bad.get(10000*10000 - 1) << endl;
+    } catch (const bad_alloc& e) {
+        cerr << e.what() << endl;
+    }
 
     cout << "Проверки на set." << endl;
-    a.set(100, 7);
-    a.set(0, 99999);
+    try {
+        a.set(100, 7);
+    } catch (const out_of_range& e) {
+        cerr << e.what() << endl;
+    }
+    try {
+        a.set(0, 99999);
+    } catch (const invalid_argument& e) {
+        cerr << e.what() << endl;
+    }
     a.set(0, 42);
     cout << "После этого массив: ";
     a.print();
 
     cout << "Проверки на get." << endl;
     cout << "get(2) = " << a.get(2) << endl;
-    cout << "get(-1) = " << a.get(-1) << " (ошибка, вернётся 0)" << endl;
+    cout << "get(-1) = " << endl;
+    try {
+        a.get(-1);
+    } catch (const out_of_range& e) {
+        cerr << e.what() << endl;
+    }
 
     cout << "Конструктор копирования" << endl;
     DynamicArray b(a);
@@ -35,7 +58,11 @@ int main() {
 
     cout << "Добавление значения в конец." << endl;
     a.append(77);
-    a.append(500);
+    try {
+        a.append(500);
+    } catch (const invalid_argument& e) {
+        cerr << e.what() << endl;
+    }
     a.append(-33);
     cout << "a = ";
     a.print();
@@ -56,6 +83,7 @@ int main() {
     cout << "x.subtract(y) = ";
     x.print();
 
+    // badalloc зациклить выделение памяти, либо огромный размер массива
     cout << "всё!" << endl;
     return 0;
 }

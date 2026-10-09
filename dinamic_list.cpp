@@ -4,9 +4,7 @@ using namespace std;
 
 DynamicArray::DynamicArray(int size) : size(size), capacity(size + 20) {
     if (size < 0) {
-        cerr << "Ошибка! Некорректный размер:" << size << ". Создан пустой массив." << endl;
-        this->size = 0;
-        this->capacity = 20;
+        throw invalid_argument("Ошибка! Некорректный размер: меньше 0.");
     }
     data = new int[this->capacity]();
 }
@@ -28,28 +26,24 @@ void DynamicArray::print() const {
 
 void DynamicArray::set(int index, int value) {
     if (index < 0 || index >= size) {
-        cerr << "Ошибка! set: индекс:" << index << " вне границ [0.." << size - 1 << "]. Не выполнено." << endl;
-        return;
+        throw out_of_range("Ошибка! set: индекс:" + to_string(index) + " вне границ [0.." + to_string(size - 1) + "]. Не выполнено.");
     }
     if (value < -100 || value > 100) {
-        cerr << "Ошибка! set: значение:" << value << " вне диапазона [-100; 100]. Не выполнено." << endl;
-        return;
+       throw invalid_argument("Ошибка! set: значение:" + to_string(value) + " вне диапазона [-100; 100]. Не выполнено.");
     }
     data[index] = value;
 }
 
 int DynamicArray::get(int index) const {
     if (index < 0 || index >= size) {
-        cerr << "Ошибка! get: индекс: " << index << " вне границ [0.." << size - 1 << "]. Возвращен 0." << endl;
-        return 0;
+        throw out_of_range("Ошибка! get: индекс:" + to_string(index) + " вне границ [0.." + to_string(size - 1) + "]. Не выполнено.");
     }
     return data[index];
 }
 
 void DynamicArray::append(int value) {
     if (value < -100 || value > 100) {
-        cerr << "Ошибка! print: значение: " << value << " вне диапазона [-100; 100]. Не выполнено." << endl;
-        return;
+        throw invalid_argument("Ошибка! append: значение: " + to_string(value) + " вне диапазона [-100; 100]. Не выполнено.");
     }
     if (capacity > size) {
         data[size + 1] = value;
