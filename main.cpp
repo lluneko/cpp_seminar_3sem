@@ -19,7 +19,7 @@ int main() {
     }
     try {
         DynamicArray bad(10000*10000);
-        cout << 1029382132 << endl;
+        cout << bad.get(10000*10000 - 1) << endl;
     } catch (const bad_alloc& e) {
         cerr << e.what() << endl;
     }
