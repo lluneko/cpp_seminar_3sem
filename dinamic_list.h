@@ -32,6 +32,22 @@ public:
         stream << "]";
         return stream;
     }
+
+    T& operator[](int index);
+    const T& operator[](int index) const;
+
+    bool operator==(const DynamicArray<T>& other) const;
+    bool operator!=(const DynamicArray<T>& other) const;
+
+    DynamicArray<T>& operator+=(const DynamicArray<T>& other);
+    DynamicArray<T>& operator-=(const DynamicArray<T>& other);
+    DynamicArray<T>& operator+=(const T& scalar);
+    DynamicArray<T>& operator-=(const T& scalar);
+
+    T* begin() { return data; }
+    T* end() { return data + size; }
+    const T* begin() const { return data; }
+    const T* end() const { return data + size; }
 };
 
 template <typename T>
@@ -127,4 +143,74 @@ void DynamicArray<T>::subtract(const DynamicArray& other) {
         throw invalid_argument("ќшибка! subtract: значени€ не €вл€ютс€ числами.");
     }
     
+}
+
+template <typename T>
+T& DynamicArray<T>::operator[](int index) {
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("operator[]: индекс вне границ");
+    }
+    return data[index];
+}
+
+template <typename T>
+const T& DynamicArray<T>::operator[](int index) const {
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("operator[]: индекс вне границ");
+    }
+    return data[index];
+}
+
+template <typename T>
+bool DynamicArray<T>::operator==(const DynamicArray<T>& other) const {
+    if (size != other.size) {
+        return false;
+    }
+    for (int i = 0; i < size; ++i) {
+        if (data[i] != other.data[i]) return false;
+    }
+    return true;
+}
+
+template <typename T>
+bool DynamicArray<T>::operator!=(const DynamicArray<T>& other) const {
+    return !(*this == other);
+}
+
+template <typename T>
+DynamicArray<T>& DynamicArray<T>::operator+=(const DynamicArray<T>& other) {
+    int minSize;
+    if (size < other.size) {
+        minSize = size;
+    } else {
+        minSize = other.size;
+    } 
+    for (int i = 0; i < minSize; ++i) data[i] += other.data[i];
+    return *this;
+}
+
+template <typename T>
+DynamicArray<T>& DynamicArray<T>::operator-=(const DynamicArray<T>& other) {
+    int minSize;
+    if (size < other.size) {
+        minSize = size;
+    } else {
+        minSize = other.size;
+    } 
+    for (int i = 0; i < minSize; ++i) data[i] -= other.data[i];
+    return *this;
+}
+
+template <typename T>
+DynamicArray<T>& DynamicArray<T>::operator+=(const T& scalar) {
+    for (int i = 0; i < size; ++i) {
+        data[i] += scalar;
+    }
+    return *this;
+}
+
+template <typename T>
+DynamicArray<T>& DynamicArray<T>::operator-=(const T& scalar) {
+    for (int i = 0; i < size; ++i) data[i] -= scalar;
+    return *this;
 }
