@@ -106,6 +106,45 @@ int main() {
         cerr << "std::bad_typeid! Нечисловой тип данных." << endl;
     }
 
+    cout << "Оператор []" << endl;
+    DynamicArray<int> h(3);
+    h[0] = 10; 
+    h[1] = -50;
+    h[2] = 99;
+    cout << "h = " << h << endl;
+    try {
+        int x = a[10];
+    } catch (const std::out_of_range& e) {
+        cerr << e.what() << endl;
+    }
+
+    cout << "Сравнение" << endl;
+    DynamicArray<int> r(3);
+    r[0] = 10; r[1] = -50; r[2] = 99;
+    if (h == r) cout << "h и r равны" << endl;
+    r[0] = 5;
+    if (h != r) cout << "После изменения r[0], h и r не равны" << endl;
+
+    cout << "Составные операторы" << endl;
+    DynamicArray<int> c(4);
+    c[0] = 1; c[1] = 2; c[2] = 3; c[3] = 4;
+    DynamicArray<int> d(2);
+    d[0] = 10; d[1] = 20;
+    cout << "c = " << c << endl;
+    cout << "d = " << d << endl;
+    c += d;
+    cout << "c += d: " << c << " (ожидалось [11, 22, 3, 4])" << endl;
+    c += 5;
+    cout << "c += 5: " << c << endl;
+    c -= 1;
+    cout << "c -= 1: " << c << endl;
+
+    cout << "Итераторы" << endl;
+    for (const auto& x : c) {
+        cout << x << " ";
+    }
+    cout << endl;
+
     cout << "всё!" << endl;
     return 0;
 }
