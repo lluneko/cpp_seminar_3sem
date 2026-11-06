@@ -139,11 +139,21 @@ int main() {
     c -= 1;
     cout << "c -= 1: " << c << endl;
 
-    cout << "Итераторы" << endl;
+    cout << "ТЕСТ ИТЕРАТОРОВ!" << endl;
     for (const auto& x : c) {
         cout << x << " ";
     }
     cout << endl;
+
+    cout << "Проверка оператора присваивания:" << endl;
+    DynamicArray<int> p(2), w(2);
+    p[0] = 1; p[1] = 2;
+    w[0] = 9; w[1] = 8;
+    cout << "До p = w: p=" << p << ", w=" << w << endl;
+    p = w; // Копирующее присваивание
+    cout << "После p = w: p=" << p << ", b=" << w << endl;
+    p = std::move(w); // Move-присваивание
+    cout << "После p = move(w): p=" << p << ", b(пуст)=" << w << endl;
 
     cout << "всё!" << endl;
     return 0;

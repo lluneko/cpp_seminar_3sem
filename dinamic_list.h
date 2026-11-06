@@ -48,6 +48,10 @@ public:
     T* end() { return data + size; }
     const T* begin() const { return data; }
     const T* end() const { return data + size; }
+
+    DynamicArray<T>& operator=(const DynamicArray<T>& other);
+    DynamicArray(DynamicArray<T>&& other) noexcept;
+    DynamicArray<T>& operator=(DynamicArray<T>&& other) noexcept;
 };
 
 template <typename T>
@@ -212,5 +216,45 @@ DynamicArray<T>& DynamicArray<T>::operator+=(const T& scalar) {
 template <typename T>
 DynamicArray<T>& DynamicArray<T>::operator-=(const T& scalar) {
     for (int i = 0; i < size; ++i) data[i] -= scalar;
+    return *this;
+}
+
+template <typename T>
+DynamicArray<T>& DynamicArray<T>::operator=(const DynamicArray<T>& other) {
+    if (this == &other) { 
+        return *this;
+    }
+    delete[] data;
+    size = other.size;
+    capacity = other.capacity;
+    data = new T[capacity];
+    for (int i = 0; i < size; ++i) {
+        data[i] = other.data[i];
+    }
+    return *this;
+}
+
+template <typename T>
+DynamicArray<T>::DynamicArray(DynamicArray<T>&& other) noexcept {
+    data = other.data;
+    size = other.size;
+    capacity = other.capacity;
+    other.data = nullptr;
+    other.size = 0;
+    other.capacity = 0;
+}
+
+template <typename T>
+DynamicArray<T>& DynamicArray<T>::operator=(DynamicArray<T>&& other) noexcept {
+    if (this == &other) {
+        return *this;
+    }
+    delete[] data;
+    data = other.data;
+    size = other.size;
+    capacity = other.capacity;
+    other.data = nullptr;
+    other.size = 0;
+    other.capacity = 0;
     return *this;
 }
